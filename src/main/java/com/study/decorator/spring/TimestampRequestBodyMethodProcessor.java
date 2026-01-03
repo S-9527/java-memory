@@ -1,21 +1,26 @@
 package com.study.decorator.spring;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 
+import java.util.List;
 import java.util.Map;
 
 public class TimestampRequestBodyMethodProcessor implements HandlerMethodArgumentResolver {
 
-    private final RequestResponseBodyMethodProcessor processor;
+    private RequestResponseBodyMethodProcessor processor;
 
-    public TimestampRequestBodyMethodProcessor(RequestResponseBodyMethodProcessor processor) {
-        this.processor = processor;
+    private final ApplicationContext context;
+
+    public TimestampRequestBodyMethodProcessor(ApplicationContext applicationContext) {
+        this.context = applicationContext;
     }
 
     @Override
@@ -25,11 +30,25 @@ public class TimestampRequestBodyMethodProcessor implements HandlerMethodArgumen
 
     @Override
     public @Nullable Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer, NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
+        setupProcessor();
         Object result = processor.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
-        if (!(result instanceof Map<?,?>)) {
+        if (!(result instanceof Map<?, ?>)) {
             return result;
         }
         ((Map) result).put("timestamp", System.currentTimeMillis());
         return result;
+    }
+
+    private void setupProcessor() {
+        if (processor != null) return;
+
+        RequestMappingHandlerAdapter adapter = this.context.getBean(RequestMappingHandlerAdapter.class);
+        List<HandlerMethodArgumentResolver> argumentResolvers = adapter.getArgumentResolvers();
+        for (HandlerMethodArgumentResolver argumentResolver : argumentResolvers) {
+            if (argumentResolver instanceof RequestResponseBodyMethodProcessor) {
+                this.processor = (RequestResponseBodyMethodProcessor) argumentResolver;
+                return;
+            }
+        }
     }
 }
