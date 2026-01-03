@@ -15,8 +15,9 @@ public class StrategyController {
 
     @GetMapping("/{recharge}")
     public String getCustomer(@PathVariable int recharge) {
+        UserType userType = UserType.typeOf(recharge);
         for (CustomerService customerService : customerServices) {
-            if (customerService.support(recharge)) {
+            if (customerService.support().equals(userType)) {
                 return customerService.findCustomer();
             }
         }

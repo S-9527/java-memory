@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class NormalCustomerService implements CustomerService {
     @Override
-    public boolean support(int recharge) {
-        return recharge > 0 && recharge <= 100;
+    public UserType support() {
+        return UserType.Normal;
     }
 
     @Override

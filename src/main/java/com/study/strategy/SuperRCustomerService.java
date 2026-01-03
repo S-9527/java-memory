@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 public class SuperRCustomerService implements CustomerService {
 
     @Override
-    public boolean support(int recharge) {
-        return recharge > 100000 && recharge <= 1000000;
+    public UserType support() {
+        return UserType.Super;
     }
 
     @Override
