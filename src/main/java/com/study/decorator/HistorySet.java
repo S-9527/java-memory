@@ -5,47 +5,51 @@ import java.util.*;
 public class HistorySet<E> implements Set<E> {
 
     List<E> removeList = new ArrayList<>();
-    private Set<E> hashSet = new HashSet<>();
+    private final Set<E> delegate;
+
+    public HistorySet(Set<E> hashSet) {
+        this.delegate = hashSet;
+    }
 
 
     @Override
     public int size() {
-        return hashSet.size();
+        return delegate.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return hashSet.isEmpty();
+        return delegate.isEmpty();
     }
 
     @Override
     public boolean contains(Object o) {
-        return hashSet.contains(o);
+        return delegate.contains(o);
     }
 
     @Override
     public Iterator<E> iterator() {
-        return hashSet.iterator();
+        return delegate.iterator();
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return delegate.toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        return delegate.toArray(a);
     }
 
     @Override
     public boolean add(E e) {
-        return hashSet.add(e);
+        return delegate.add(e);
     }
 
     @Override
     public boolean remove(Object o) {
-        if (hashSet.remove(o)) {
+        if (delegate.remove(o)) {
             removeList.add((E) o);
             return true;
         }
@@ -54,31 +58,31 @@ public class HistorySet<E> implements Set<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        return delegate.contains(c);
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        return false;
+        return delegate.addAll(c);
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        return delegate.retainAll(c);
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        return delegate.removeAll(c);
     }
 
     @Override
     public void clear() {
-
+        delegate.clear();
     }
 
     @Override
     public String toString() {
-        return hashSet.toString() + "remove list: " + removeList;
+        return delegate.toString() + " remove list: " + removeList;
     }
 }

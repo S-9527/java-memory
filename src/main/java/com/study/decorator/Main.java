@@ -1,7 +1,8 @@
 import com.study.decorator.HistorySet;
 
 void main() {
-    HistorySet<String> set = new HistorySet<>();
+    Set<String> historySet = new HistorySet<>(new HashSet<>());
+    Set<String> set = new HistorySet<>(historySet);
     set.add("1");
     set.add("2");
     set.add("3");
