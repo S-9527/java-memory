@@ -3,12 +3,8 @@ package com.study.strategy;
 import org.springframework.stereotype.Service;
 
 @Service
+@SupportUserType(UserType.Small)
 public class SmallRCustomerService implements CustomerService {
-
-    @Override
-    public UserType support() {
-        return UserType.Small;
-    }
 
     @Override
     public String findCustomer() {

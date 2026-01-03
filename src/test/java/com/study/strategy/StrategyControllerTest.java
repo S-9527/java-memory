@@ -29,7 +29,6 @@ class StrategyControllerTest {
     void getCustomer_Recharge50_ReturnNormalCustomer() throws Exception {
         // 1. 模拟普通玩家客服
         CustomerService normalService = mock(NormalCustomerService.class);
-        when(normalService.support()).thenReturn(UserType.Normal);
         when(normalService.findCustomer()).thenReturn("普通玩家客服");
 
         // 2. 模拟其他客服不匹配
@@ -50,7 +49,6 @@ class StrategyControllerTest {
     @Test
     void getCustomer_Recharge5000_ReturnSmallRCustomer() throws Exception {
         CustomerService smallRService = mock(CustomerService.class);
-        when(smallRService.support()).thenReturn(UserType.Small);
         when(smallRService.findCustomer()).thenReturn("小R 玩家客服");
 
         List<CustomerService> mockServices = List.of(smallRService);
@@ -66,7 +64,6 @@ class StrategyControllerTest {
     @Test
     void getCustomer_Recharge50000_ReturnBigRCustomer() throws Exception {
         CustomerService bigRService = mock(CustomerService.class);
-        when(bigRService.support()).thenReturn(UserType.Big);
         when(bigRService.findCustomer()).thenReturn("大R 玩家客服");
 
         List<CustomerService> mockServices = List.of(bigRService);
@@ -82,7 +79,6 @@ class StrategyControllerTest {
     @Test
     void getCustomer_Recharge500000_ReturnSuperRCustomer() throws Exception {
         CustomerService superRService = mock(CustomerService.class);
-        when(superRService.support()).thenReturn(UserType.Super);
         when(superRService.findCustomer()).thenReturn("超R 玩家客服");
 
         List<CustomerService> mockServices = List.of(superRService);
@@ -98,7 +94,6 @@ class StrategyControllerTest {
     @Test
     void getCustomer_Recharge2000000_ReturnPersonalCustomer() throws Exception {
         CustomerService personalService = mock(CustomerService.class);
-        when(personalService.support()).thenReturn(UserType.Personal);
         when(personalService.findCustomer()).thenReturn("专属客服");
 
         List<CustomerService> mockServices = List.of(personalService);
@@ -115,7 +110,6 @@ class StrategyControllerTest {
     void getCustomer_Recharge0_ReturnNotFound() throws Exception {
         // 1. 模拟客服不支持 recharge=0
         CustomerService normalService = mock(NormalCustomerService.class);
-        when(normalService.support()).thenReturn(null);
 
         // 2. 为 mock List 设置迭代行为
         List<CustomerService> mockServices = List.of(normalService);

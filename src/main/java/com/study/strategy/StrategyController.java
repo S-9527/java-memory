@@ -29,11 +29,16 @@ public class StrategyController {
     @Autowired
     public void setCustomerServiceMap(List<CustomerService> customerServiceList) {
         this.customerServiceMap = customerServiceList.stream()
-                .filter(customerService -> customerService.support() != null)
-                .collect(Collectors.toMap(CustomerService::support, Function.identity()));
+                .filter(customerService -> customerService.getClass().isAnnotationPresent(SupportUserType.class))
+                .collect(Collectors.toMap(this::findUserTypeFromService, Function.identity()));
 
         if (this.customerServiceMap.size() != UserType.values().length) {
             throw new IllegalArgumentException("存在用户类型没有对应的处理器");
         }
+    }
+
+    private UserType findUserTypeFromService(CustomerService customerService) {
+        SupportUserType annotation = customerService.getClass().getAnnotation(SupportUserType.class);
+        return annotation.value();
     }
 }
