@@ -29,12 +29,11 @@ class StrategyControllerTest {
     void getCustomer_Recharge50_ReturnNormalCustomer() throws Exception {
         // 1. 模拟普通玩家客服
         CustomerService normalService = mock(NormalCustomerService.class);
-        when(normalService.support(50)).thenReturn(true);
+        when(normalService.support()).thenReturn(UserType.Normal);
         when(normalService.findCustomer()).thenReturn("普通玩家客服");
 
         // 2. 模拟其他客服不匹配
         CustomerService smallRService = mock(SmallRCustomerService.class);
-        when(smallRService.support(50)).thenReturn(false);
 
         // 3. 关键修正：为 mock List 设置迭代行为，使其返回我们准备的客服实例
         List<CustomerService> mockServices = Arrays.asList(normalService, smallRService);
@@ -51,11 +50,8 @@ class StrategyControllerTest {
     @Test
     void getCustomer_Recharge5000_ReturnSmallRCustomer() throws Exception {
         CustomerService smallRService = mock(CustomerService.class);
-        when(smallRService.support(5000)).thenReturn(true);
+        when(smallRService.support()).thenReturn(UserType.Small);
         when(smallRService.findCustomer()).thenReturn("小R 玩家客服");
-
-        CustomerService otherService = mock(CustomerService.class);
-        when(otherService.support(5000)).thenReturn(false);
 
         List<CustomerService> mockServices = List.of(smallRService);
         Iterator<CustomerService> iterator = mockServices.iterator();
@@ -70,11 +66,8 @@ class StrategyControllerTest {
     @Test
     void getCustomer_Recharge50000_ReturnBigRCustomer() throws Exception {
         CustomerService bigRService = mock(CustomerService.class);
-        when(bigRService.support(50000)).thenReturn(true);
+        when(bigRService.support()).thenReturn(UserType.Big);
         when(bigRService.findCustomer()).thenReturn("大R 玩家客服");
-
-        CustomerService otherService = mock(CustomerService.class);
-        when(otherService.support(50000)).thenReturn(false);
 
         List<CustomerService> mockServices = List.of(bigRService);
         Iterator<CustomerService> iterator = mockServices.iterator();
@@ -89,11 +82,8 @@ class StrategyControllerTest {
     @Test
     void getCustomer_Recharge500000_ReturnSuperRCustomer() throws Exception {
         CustomerService superRService = mock(CustomerService.class);
-        when(superRService.support(500000)).thenReturn(true);
+        when(superRService.support()).thenReturn(UserType.Super);
         when(superRService.findCustomer()).thenReturn("超R 玩家客服");
-
-        CustomerService otherService = mock(CustomerService.class);
-        when(otherService.support(50000)).thenReturn(false);
 
         List<CustomerService> mockServices = List.of(superRService);
         Iterator<CustomerService> iterator = mockServices.iterator();
@@ -108,11 +98,8 @@ class StrategyControllerTest {
     @Test
     void getCustomer_Recharge2000000_ReturnPersonalCustomer() throws Exception {
         CustomerService personalService = mock(CustomerService.class);
-        when(personalService.support(2000000)).thenReturn(true);
+        when(personalService.support()).thenReturn(UserType.Personal);
         when(personalService.findCustomer()).thenReturn("专属客服");
-
-        CustomerService otherService = mock(CustomerService.class);
-        when(otherService.support(2000000)).thenReturn(false);
 
         List<CustomerService> mockServices = List.of(personalService);
         Iterator<CustomerService> iterator = mockServices.iterator();
@@ -128,7 +115,7 @@ class StrategyControllerTest {
     void getCustomer_Recharge0_ReturnNotFound() throws Exception {
         // 1. 模拟客服不支持 recharge=0
         CustomerService normalService = mock(NormalCustomerService.class);
-        when(normalService.support(0)).thenReturn(false);
+        when(normalService.support()).thenReturn(null);
 
         // 2. 为 mock List 设置迭代行为
         List<CustomerService> mockServices = List.of(normalService);
