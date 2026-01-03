@@ -1,4 +1,4 @@
-import com.study.decorator.HistorySet;
+import com.study.decorator.set.HistorySet;
 
 void main() {
     Set<String> historySet = new HistorySet<>(new HashSet<>());

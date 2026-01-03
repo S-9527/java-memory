@@ -1,0 +1,24 @@
+package com.study.decorator.input;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.Instant;
+
+public class Main {
+    public static void main(String[] args) {
+        File file = new File("jvm.pdf");
+        long l = Instant.now().toEpochMilli();
+        try(FileInputStream fileInputStream = new FileInputStream(file)) {
+            while (true) {
+                int read = fileInputStream.read();
+                if (read == -1) {
+                    break;
+                }
+            }
+            System.out.println("用时:"+ (Instant.now().toEpochMilli() -l) + "毫秒");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package com.study.decorator;
+package com.study.decorator.set;
 
 import java.util.*;
 
