@@ -1,6 +1,9 @@
 package com.study.iterator;
 
-public class User {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class User implements Iterable<String> {
     private String name;
     private int age;
 
@@ -31,5 +34,33 @@ public class User {
                 "name='" + name + '\'' +
                 ", age=" + age +
                 '}';
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return new UserIte();
+    }
+
+    class UserIte implements Iterator<String> {
+
+        int count = 2;
+
+        @Override
+        public boolean hasNext() {
+            return count > 0;
+        }
+
+        @Override
+        public String next() {
+            count--;
+            if (count == 1) {
+                return User.this.name;
+            }
+            if (count == 0) {
+                return String.valueOf(User.this.age);
+            }
+
+            throw new NoSuchElementException();
+        }
     }
 }
