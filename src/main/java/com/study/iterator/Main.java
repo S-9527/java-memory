@@ -12,6 +12,7 @@ public class Main {
             if (user.getAge() == 11) {
                 list.add(new User("zhangsan", 3));
             }
+            break;
         }
 
         for (User user : list) {
